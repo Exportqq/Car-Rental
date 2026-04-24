@@ -68,6 +68,16 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		6ED931462F9B97080034AF89 /* Core */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		6ED931572F9B994C0034AF89 /* Modules */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Modules;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +108,8 @@
 		6ED931052F9B8EAB0034AF89 = {
 			isa = PBXGroup;
 			children = (
+				6ED931572F9B994C0034AF89 /* Modules */,
+				6ED931462F9B97080034AF89 /* Core */,
 				6ED931442F9B939D0034AF89 /* App */,
 				6ED931432F9B93960034AF89 /* Resources */,
 				6ED931102F9B8EAB0034AF89 /* Car Rental */,
@@ -136,6 +148,8 @@
 				6ED931102F9B8EAB0034AF89 /* Car Rental */,
 				6ED931432F9B93960034AF89 /* Resources */,
 				6ED931442F9B939D0034AF89 /* App */,
+				6ED931462F9B97080034AF89 /* Core */,
+				6ED931572F9B994C0034AF89 /* Modules */,
 			);
 			name = "Car Rental";
 			packageProductDependencies = (
