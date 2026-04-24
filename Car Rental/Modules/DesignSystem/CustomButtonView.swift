@@ -7,6 +7,7 @@ class CustomButtonView: UIView {
     private lazy var сustomBtn: UIButton = {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Poppins-Medium", size: 16)
         button.layer.cornerRadius = 16
         button.backgroundColor = typeFill ? .brandClr : .clear
         button.layer.cornerRadius = 12

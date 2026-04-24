@@ -55,12 +55,23 @@ class AuthViewController: UIViewController {
         return stack
     }()
     
+    private lazy var buttonStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [signInButton, signUpButton])
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = 20
+        return stack
+    }()
+    
     private let signInButton = CustomButtonView()
+    private let signUpButton = CustomButtonView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
+        SetupActions()
     }
     
     private func SetupView() {
@@ -69,6 +80,7 @@ class AuthViewController: UIViewController {
         view.addSubview(stackView)
         view.addSubview(buttonView)
         view.addSubview(welcomeStack)
+        view.addSubview(buttonStack)
         
         companyName.text = viewModel.companyName
         welcomeTitle.text = viewModel.welcomeTitle
@@ -77,7 +89,7 @@ class AuthViewController: UIViewController {
     }
     
     private func SetupConstraints() {
-        [stackView, buttonView, welcomeStack].forEach{
+        [stackView, buttonView, welcomeStack, buttonStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -95,17 +107,29 @@ class AuthViewController: UIViewController {
             
             welcomeStack.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 42),
             welcomeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            welcomeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
+            welcomeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            
+            buttonStack.topAnchor.constraint(equalTo: welcomeStack.bottomAnchor, constant: 45),
+            buttonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            buttonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
     private func SetupActions() {
         signInButton.configure(title: "Sign In", typeFill: true) { [weak self] in
-            self?.pushSignIn()
+            self?.pushLogin()
+        }
+        
+        signUpButton.configure(title: "Sign Up", typeFill: true) { [weak self] in
+            self?.pushRegister()
         }
     }
     
-    private func pushSignIn() {
-        NavigationHelper(SignIn)
+    @objc private func pushLogin() {
+        NavigationHelper.push(LoginViewController(), from: self)
+    }
+    
+    @objc private func pushRegister() {
+        NavigationHelper.push(RegisterViewController(), from: self)
     }
 }

@@ -30,10 +30,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6ED931452F9B93BC0034AF89 /* Exceptions for "Resources" folder in "Car Rental" target */ = {
+		6E7E3F282F9C068C00FCF715 /* Exceptions for "Car Rental" folder in "Car Rental" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 6ED9310D2F9B8EAB0034AF89 /* Car Rental */;
 		};
@@ -42,6 +42,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6ED931102F9B8EAB0034AF89 /* Car Rental */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6E7E3F282F9C068C00FCF715 /* Exceptions for "Car Rental" folder in "Car Rental" target */,
+			);
 			path = "Car Rental";
 			sourceTree = "<group>";
 		};
@@ -53,34 +56,6 @@
 		6ED931312F9B8EAD0034AF89 /* Car RentalUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Car RentalUITests";
-			sourceTree = "<group>";
-		};
-		6ED931432F9B93960034AF89 /* Resources */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				6ED931452F9B93BC0034AF89 /* Exceptions for "Resources" folder in "Car Rental" target */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		6ED931442F9B939D0034AF89 /* App */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = App;
-			sourceTree = "<group>";
-		};
-		6ED931462F9B97080034AF89 /* Core */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Core;
-			sourceTree = "<group>";
-		};
-		6ED931572F9B994C0034AF89 /* Modules */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		6ED931762F9BB3D30034AF89 /* Service */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -113,11 +88,6 @@
 		6ED931052F9B8EAB0034AF89 = {
 			isa = PBXGroup;
 			children = (
-				6ED931762F9BB3D30034AF89 /* Service */,
-				6ED931572F9B994C0034AF89 /* Modules */,
-				6ED931462F9B97080034AF89 /* Core */,
-				6ED931442F9B939D0034AF89 /* App */,
-				6ED931432F9B93960034AF89 /* Resources */,
 				6ED931102F9B8EAB0034AF89 /* Car Rental */,
 				6ED931272F9B8EAD0034AF89 /* Car RentalTests */,
 				6ED931312F9B8EAD0034AF89 /* Car RentalUITests */,
@@ -152,11 +122,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				6ED931102F9B8EAB0034AF89 /* Car Rental */,
-				6ED931432F9B93960034AF89 /* Resources */,
-				6ED931442F9B939D0034AF89 /* App */,
-				6ED931462F9B97080034AF89 /* Core */,
-				6ED931572F9B994C0034AF89 /* Modules */,
-				6ED931762F9BB3D30034AF89 /* Service */,
 			);
 			name = "Car Rental";
 			packageProductDependencies = (
@@ -326,7 +291,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K6MHTJQG7M;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_FILE = "Car Rental/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -357,7 +322,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K6MHTJQG7M;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_FILE = "Car Rental/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
