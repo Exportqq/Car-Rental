@@ -1,6 +1,9 @@
 import UIKit
 
 class AuthViewController: UIViewController {
+    
+    private let viewModel = AuthViewModel()
+    
     private let logo: UIImageView = {
         let img = UIImageView()
         img.image = UIImage(named: "logo")
@@ -9,7 +12,6 @@ class AuthViewController: UIViewController {
     
     private let companyName: UILabel = {
         let label = UILabel()
-        label.text = "CAR RENTAL"
         label.font = UIFont(name: "Poppins-Bold", size: 20)
         label.textColor = .textGrey
         return label
@@ -23,6 +25,38 @@ class AuthViewController: UIViewController {
         return stack
     }()
     
+    private let buttonView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 33
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        return view
+    }()
+    
+    private let welcomeTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Poppins-Bold", size: 36)
+        label.textColor = .textBlack
+        return label
+    }()
+    
+    private let welcomeTxt: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Poppins-Regular", size: 16)
+        label.textColor = .textGrey
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var welcomeStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [welcomeTitle, welcomeTxt])
+        stack.axis = .vertical
+        stack.spacing = 10
+        return stack
+    }()
+    
+    private let signInButton = CustomButtonView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
@@ -33,10 +67,17 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .backClr
         
         view.addSubview(stackView)
+        view.addSubview(buttonView)
+        view.addSubview(welcomeStack)
+        
+        companyName.text = viewModel.companyName
+        welcomeTitle.text = viewModel.welcomeTitle
+        welcomeTxt.text = viewModel.welcomeTxt
+        
     }
     
     private func SetupConstraints() {
-        [stackView].forEach{
+        [stackView, buttonView, welcomeStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -45,7 +86,26 @@ class AuthViewController: UIViewController {
             logo.heightAnchor.constraint(equalToConstant: 70),
             
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            buttonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            buttonView.heightAnchor.constraint(equalToConstant: 364),
+            buttonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            buttonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            welcomeStack.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 42),
+            welcomeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            welcomeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
+    }
+    
+    private func SetupActions() {
+        signInButton.configure(title: "Sign In", typeFill: true) { [weak self] in
+            self?.pushSignIn()
+        }
+    }
+    
+    private func pushSignIn() {
+        NavigationHelper(SignIn)
     }
 }
