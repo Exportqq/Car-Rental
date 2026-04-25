@@ -2,60 +2,65 @@ import UIKit
 
 class CustomButtonView: UIView {
     
-    private var typeFill: Bool = true
+    private var typeFill: Bool = true {
+        didSet {
+            applyStyle()
+        }
+    }
     
-    private lazy var сustomBtn: UIButton = {
+    private lazy var customBtn: UIButton = {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "Poppins-Medium", size: 16)
-        button.layer.cornerRadius = 16
-        button.backgroundColor = typeFill ? .brandClr : .clear
         button.layer.cornerRadius = 12
-        button.layer.borderWidth = typeFill ? 0 : 1
-        button.layer.borderColor = UIColor.red.cgColor
         return button
     }()
     
+    private var nextPageAction: (() -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstrains()
+        applyStyle()
     }
-    
-    private var nextPageAction: (() -> Void)?
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     @objc private func getNextPage() {
         nextPageAction?()
     }
 
     func configure(title: String, typeFill: Bool, nextPage: @escaping () -> Void) {
-        сustomBtn.setTitle(title, for: .normal)
+        customBtn.setTitle(title, for: .normal)
         self.typeFill = typeFill
         nextPageAction = nextPage
-        сustomBtn.addTarget(self, action: #selector(getNextPage), for: .touchUpInside)
+        
+        customBtn.addTarget(self, action: #selector(getNextPage), for: .touchUpInside)
+    }
+    
+    private func applyStyle() {
+        customBtn.setTitleColor(typeFill ? .white : .brandClr, for: .normal)
+        customBtn.backgroundColor = typeFill ? .brandClr : .clear
+        customBtn.layer.borderWidth = typeFill ? 0 : 1
+        customBtn.layer.borderColor = UIColor.brandClr.cgColor
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private func setupUI() {
-        addSubview(сustomBtn)
+        addSubview(customBtn)
     }
-    
     
     private func setupConstrains() {
-        [сustomBtn].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        customBtn.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            сustomBtn.topAnchor.constraint(equalTo: self.topAnchor),
-            сustomBtn.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            сustomBtn.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            сustomBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            сustomBtn.heightAnchor.constraint(equalToConstant: 56),
-
+            customBtn.topAnchor.constraint(equalTo: topAnchor),
+            customBtn.bottomAnchor.constraint(equalTo: bottomAnchor),
+            customBtn.leadingAnchor.constraint(equalTo: leadingAnchor),
+            customBtn.trailingAnchor.constraint(equalTo: trailingAnchor),
+            customBtn.heightAnchor.constraint(equalToConstant: 56),
         ])
     }
 }

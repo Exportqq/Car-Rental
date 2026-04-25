@@ -120,7 +120,7 @@ class AuthViewController: UIViewController {
             self?.pushLogin()
         }
         
-        signUpButton.configure(title: "Sign Up", typeFill: true) { [weak self] in
+        signUpButton.configure(title: "Sign Up", typeFill: false) { [weak self] in
             self?.pushRegister()
         }
     }

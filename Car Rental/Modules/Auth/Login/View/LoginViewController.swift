@@ -1,33 +1,42 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    private let test: UILabel = {
-        let label = UILabel()
-        label.text = "test"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        return label
-    }()
+    
+    private let backButton = BackButtonView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
+        setupActions()
     }
     
     private func SetupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .backClr
+        navigationItem.hidesBackButton = true
         
-        view.addSubview(test)
+        view.addSubview(backButton)
     }
     
     private func SetupConstraints() {
-        [test].forEach{
+        [backButton].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
-            
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            backButton.widthAnchor.constraint(equalToConstant: 48),
         ])
+    }
+    
+    private func setupActions() {
+        backButton.configure() { [weak self] in
+            self?.pushBack()
+        }
+    }
+    
+    @objc private func pushBack() {
+        NavigationHelper.pop(from: self)
     }
 }
