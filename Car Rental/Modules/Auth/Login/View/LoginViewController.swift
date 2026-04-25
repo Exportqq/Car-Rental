@@ -5,6 +5,11 @@ class LoginViewController: UIViewController {
     private let backButton = BackButtonView()
     private let viewModel = LoginViewModel()
     
+    private let nameInput = CustomTextField()
+    private let passwordInput = CustomTextField()
+    
+    private let signInButton = CustomButtonView()
+    
     private let loginTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Poppins-Bold", size: 36)
@@ -34,6 +39,13 @@ class LoginViewController: UIViewController {
         return view
     }()
     
+    private lazy var textFieldsStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [nameInput, passwordInput, signInButton])
+        stack.axis = .vertical
+        stack.spacing = 16
+        return stack
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
@@ -48,13 +60,14 @@ class LoginViewController: UIViewController {
         view.addSubview(backButton)
         view.addSubview(textStack)
         view.addSubview(inpfutView)
+        view.addSubview(textFieldsStack)
         
         loginTitle.text = viewModel.loginTitle
         loginTxt.text = viewModel.loginTxt
     }
     
     private func SetupConstraints() {
-        [backButton, textStack, inpfutView].forEach{
+        [backButton, textStack, inpfutView, textFieldsStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -69,7 +82,14 @@ class LoginViewController: UIViewController {
             inpfutView.heightAnchor.constraint(equalToConstant: 385),
             
             textStack.bottomAnchor.constraint(equalTo: inpfutView.topAnchor, constant: -37),
-            textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32)
+            textStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            
+            nameInput.heightAnchor.constraint(equalToConstant: 56),
+            passwordInput.heightAnchor.constraint(equalToConstant: 56),
+            
+            textFieldsStack.topAnchor.constraint(equalTo: inpfutView.topAnchor, constant: 62),
+            textFieldsStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            textFieldsStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32)
         ])
     }
     
@@ -77,9 +97,20 @@ class LoginViewController: UIViewController {
         backButton.configure() { [weak self] in
             self?.pushBack()
         }
+        
+        signInButton.configure(title: "Sign in", typeFill: true) { [weak self] in
+            self?.signIn()
+        }
+        
+        nameInput.configure(placeholder: "Full name")
+        passwordInput.configure(placeholder: "Password")
     }
     
     @objc private func pushBack() {
+        NavigationHelper.pop(from: self)
+    }
+    
+    @objc private func signIn() {
         NavigationHelper.pop(from: self)
     }
 }
