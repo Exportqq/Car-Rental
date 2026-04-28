@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 class LoginViewController: UIViewController {
     
@@ -46,14 +47,17 @@ class LoginViewController: UIViewController {
         return stack
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        SetupView()
-        SetupConstraints()
+        setupView()
+        setupConstraints()
         setupActions()
+        bindViewModel()
     }
     
-    private func SetupView() {
+    private func setupView() {
         view.backgroundColor = .backClr
         navigationItem.hidesBackButton = true
         
@@ -66,8 +70,8 @@ class LoginViewController: UIViewController {
         loginTxt.text = viewModel.loginTxt
     }
     
-    private func SetupConstraints() {
-        [backButton, textStack, inpfutView, textFieldsStack].forEach{
+    private func setupConstraints() {
+        [backButton, textStack, inpfutView, textFieldsStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -76,6 +80,8 @@ class LoginViewController: UIViewController {
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backButton.widthAnchor.constraint(equalToConstant: 48),
             
+            signInButton.heightAnchor.constraint(equalToConstant: 56),
+
             inpfutView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             inpfutView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             inpfutView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -94,7 +100,7 @@ class LoginViewController: UIViewController {
     }
     
     private func setupActions() {
-        backButton.configure() { [weak self] in
+        backButton.configure { [weak self] in
             self?.pushBack()
         }
         
@@ -102,8 +108,57 @@ class LoginViewController: UIViewController {
             self?.signIn()
         }
         
-        nameInput.configure(placeholder: "Full name")
+        nameInput.configure(placeholder: "Username")
         passwordInput.configure(placeholder: "Password")
+    }
+    
+    private func bindViewModel() {
+        nameInput.textPublisher
+            .assign(to: \.username, on: viewModel)
+            .store(in: &cancellables)
+        
+        passwordInput.textPublisher
+            .assign(to: \.password, on: viewModel)
+            .store(in: &cancellables)
+        
+        viewModel.$isFormValid
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isValid in
+                self?.signInButton.isEnabled = isValid
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isSuccess
+            .filter { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                NavigationHelper.push(ProfileViewController(), from: self)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard let self else { return }
+                
+                if isLoading {
+                    self.showLoader()
+                    self.signInButton.isEnabled = false
+                } else {
+                    self.hideLoader()
+                    self.signInButton.isEnabled = true
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$error
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                self?.showError(error)
+            }
+            .store(in: &cancellables)
     }
     
     @objc private func pushBack() {
@@ -111,6 +166,17 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func signIn() {
-        NavigationHelper.pop(from: self)
+        viewModel.login()
+    }
+    
+    private func showError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }

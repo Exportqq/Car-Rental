@@ -1,15 +1,15 @@
-import Foundation
 import Combine
+import Foundation
 
-protocol LoginViewModelInputProtocol: AnyObject {
-    var loginTitle: String { get }
-    var loginTxt: String { get }
+protocol RegisterViewModelInputProtocol: AnyObject {
+    var registerTitle: String { get }
+    var registerTxt: String { get }
 }
 
-final class LoginViewModel: ObservableObject, LoginViewModelInputProtocol {
+final class RegisterViewModel: ObservableObject, RegisterViewModelInputProtocol {
 
-    let loginTitle: String = "Welcome back 👋"
-    let loginTxt: String = "Please enter your details\nto log in."
+    let registerTitle: String = "Welcome!"
+    let registerTxt: String = "Enter the information to create\nyour account."
 
     @Published var username: String = ""
     @Published var password: String = ""
@@ -19,10 +19,15 @@ final class LoginViewModel: ObservableObject, LoginViewModelInputProtocol {
     @Published var error: String?
     @Published var isSuccess: Bool = false
 
+    private let registerManager: RegisterManager
     private let loginManager: LoginManager
     private var cancellables = Set<AnyCancellable>()
 
-    init(loginManager: LoginManager = .shared) {
+    init(
+        registerManager: RegisterManager = .shared,
+        loginManager: LoginManager = .shared
+    ) {
+        self.registerManager = registerManager
         self.loginManager = loginManager
         bind()
     }
@@ -35,7 +40,7 @@ final class LoginViewModel: ObservableObject, LoginViewModelInputProtocol {
             .assign(to: &$isFormValid)
     }
 
-    func login() {
+    func register() {
         guard isFormValid else { return }
 
         isLoading = true
@@ -43,13 +48,19 @@ final class LoginViewModel: ObservableObject, LoginViewModelInputProtocol {
 
         Task {
             do {
-                let response = try await loginManager.login(
+                _ = try await registerManager.register(
                     username: username,
                     password: password
                 )
 
-                print("TOKEN:", response.token)
-                KeychainService.shared.saveToken(response.token)
+                let loginResponse = try await loginManager.login(
+                    username: username,
+                    password: password
+                )
+
+                print("TOKEN:", loginResponse.token)
+
+                KeychainService.shared.saveToken(loginResponse.token)
 
                 self.isSuccess = true
 
