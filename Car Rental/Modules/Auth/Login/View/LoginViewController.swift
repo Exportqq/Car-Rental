@@ -9,7 +9,7 @@ class LoginViewController: UIViewController {
     private let nameInput = CustomTextField()
     private let passwordInput = CustomTextField()
     
-    private let signInButton = CustomButtonView()
+    private let signInButton = CustomButtonUIButton()
     
     private let loginTitle: UILabel = {
         let label = UILabel()

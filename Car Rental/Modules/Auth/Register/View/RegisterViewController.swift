@@ -9,7 +9,7 @@ final class RegisterViewController: UIViewController {
     private let nameInput = CustomTextField()
     private let passwordInput = CustomTextField()
     
-    private let signUpButton = CustomButtonView()
+    private let signUpButton = CustomButtonUIButton()
     
     private let registerTitle: UILabel = {
         let label = UILabel()

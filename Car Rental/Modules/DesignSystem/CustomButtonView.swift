@@ -1,6 +1,6 @@
 import UIKit
 
-final class CustomButtonView: UIButton {
+final class CustomButtonUIButton: UIButton {
     
     private var typeFill: Bool = true {
         didSet {

@@ -63,11 +63,12 @@ class AuthViewController: UIViewController {
         return stack
     }()
     
-    private let signInButton = CustomButtonView()
-    private let signUpButton = CustomButtonView()
-
+    private let signInButton = CustomButtonUIButton()
+    private let signUpButton = CustomButtonUIButton()
     
     override func viewDidLoad() {
+        navigationItem.hidesBackButton = true
+        
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
@@ -100,6 +101,9 @@ class AuthViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
+            signInButton.heightAnchor.constraint(equalToConstant: 56),
+            signUpButton.heightAnchor.constraint(equalToConstant: 56),
+
             buttonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             buttonView.heightAnchor.constraint(equalToConstant: 364),
             buttonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
