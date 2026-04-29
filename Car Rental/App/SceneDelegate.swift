@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let rootVC: UIViewController
 
         if SessionManager.shared.isAuthorized {
-            rootVC = ProfileViewController()
+            rootVC = TabBarController()
         } else {
             rootVC = AuthViewController()
         }

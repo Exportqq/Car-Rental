@@ -33,6 +33,10 @@ class ProfileViewController: UIViewController {
         SetupConstraints()
         bindViewModel()
         setupActions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadProfile()
     }
     
@@ -89,6 +93,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func loadProfile() {
+        guard viewModel.user == nil else { return }
+        
         Task {
             do {
                 try await viewModel.fetchProfile()
