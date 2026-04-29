@@ -133,7 +133,7 @@ class LoginViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                NavigationHelper.push(ProfileViewController(), from: self)
+                NavigationHelper.push(TabBarController(), from: self)
             }
             .store(in: &cancellables)
         

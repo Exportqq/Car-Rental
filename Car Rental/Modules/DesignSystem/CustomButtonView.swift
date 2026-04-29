@@ -24,7 +24,7 @@ final class CustomButtonUIButton: UIButton {
     
     private func setup() {
         layer.cornerRadius = 12
-        titleLabel?.font = UIFont(name: "Poppins-Medium", size: 16)
+        titleLabel?.font = UIFont(name: "Roboto-Bold", size: 18)
         
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
