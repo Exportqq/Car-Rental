@@ -34,6 +34,8 @@ class MainViewConrtoller: UIViewController {
         return stack
     }()
     
+    private let brandsScreen = BrandsCollectionView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SetupView()
@@ -44,6 +46,11 @@ class MainViewConrtoller: UIViewController {
         view.backgroundColor = .backClr
         
         view.addSubview(headerStack)
+        
+        addChild(brandsScreen)
+        view.addSubview(brandsScreen.view)
+        brandsScreen.didMove(toParent: self)
+        brandsScreen.view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func SetupConstraints() {
@@ -60,6 +67,11 @@ class MainViewConrtoller: UIViewController {
             headerStack.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
             headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            
+            brandsScreen.view.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 20),
+            brandsScreen.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            brandsScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            brandsScreen.view.heightAnchor.constraint(equalToConstant: 94)
         ])
     }
 }
