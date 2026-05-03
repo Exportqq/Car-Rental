@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 protocol BrandsCollectionViewViewModelInputProtocol: AnyObject {
     
@@ -10,7 +11,13 @@ final class BrandsCollectionViewViewModel: BrandsCollectionViewViewModelInputPro
     private(set) var brands: [BrandsModel] = []
     private(set) var filteredPlaces: [BrandsModel] = []
     
+    @Published var isLoading: Bool = false
+    
     func fetchBrands() async throws -> [BrandsModel] {
+        
+        isLoading = true
+        defer { isLoading = false }
+        
         let result: [BrandsModel] = try await ApiClient.shared.request(
             "https://car-rental-api-u04q.onrender.com/brands"
         )

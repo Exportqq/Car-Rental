@@ -6,7 +6,8 @@ class BrandsCardView: UIView {
     private let cardBackground: UIView = {
         let background = UIView()
         background.backgroundColor = .white
-        background.layer.cornerRadius = 20
+        background.layer.cornerRadius = 24
+        background.layer.masksToBounds = true
         return background
     }()
     
@@ -59,6 +60,8 @@ class BrandsCardView: UIView {
             
             mainStack.centerYAnchor.constraint(equalTo: cardBackground.centerYAnchor),
             mainStack.centerXAnchor.constraint(equalTo: cardBackground.centerXAnchor),
+            
+            brandImage.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     

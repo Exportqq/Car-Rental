@@ -69,8 +69,8 @@ class MainViewConrtoller: UIViewController {
             headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             
             brandsScreen.view.topAnchor.constraint(equalTo: headerStack.bottomAnchor, constant: 20),
-            brandsScreen.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            brandsScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            brandsScreen.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 37),
+            brandsScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -37),
             brandsScreen.view.heightAnchor.constraint(equalToConstant: 94)
         ])
     }

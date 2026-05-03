@@ -1,13 +1,24 @@
 import UIKit
 import Kingfisher
+import Combine
 
 final class BrandsCollectionView: UIViewController {
     
     let viewModel = BrandsCollectionViewViewModel()
     
+    private var cancellables = Set<AnyCancellable>()
+    
     var onBrandsSelected: ((BrandsModel) -> Void)?
     
     private var brands: [BrandsModel] = []
+    
+    private let brandTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Brands"
+        label.textColor = .textBlack
+        label.font = UIFont(name: "Roboto-Bold", size: 24)
+        return label
+    }()
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -35,11 +46,18 @@ final class BrandsCollectionView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .clear
         
+        bindViewModel()
+        
         view.addSubview(collectionView)
+        view.addSubview(brandTitle)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            brandTitle.topAnchor.constraint(equalTo: view.topAnchor),
+            brandTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            brandTitle.heightAnchor.constraint(equalToConstant: 28),
+            
+            collectionView.topAnchor.constraint(equalTo: brandTitle.bottomAnchor, constant: 10),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -52,6 +70,8 @@ final class BrandsCollectionView: UIViewController {
     }
     
     private func loadData() {
+        guard brands.isEmpty else { return }
+
         Task {
             do {
                 let brands = try await viewModel.fetchBrands()
@@ -60,6 +80,22 @@ final class BrandsCollectionView: UIViewController {
                 print(error)
             }
         }
+    }
+    
+    private func bindViewModel() {
+        
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard let self else { return }
+                
+                if isLoading {
+                    self.showLoader()
+                } else {
+                    self.hideLoader()
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 
