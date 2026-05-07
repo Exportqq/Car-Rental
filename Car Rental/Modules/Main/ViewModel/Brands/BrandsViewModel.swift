@@ -9,7 +9,6 @@ protocol BrandsCollectionViewViewModelInputProtocol: AnyObject {
 final class BrandsCollectionViewViewModel: BrandsCollectionViewViewModelInputProtocol {
     
     private(set) var brands: [BrandsModel] = []
-    private(set) var filteredPlaces: [BrandsModel] = []
     
     @Published var isLoading: Bool = false
     
