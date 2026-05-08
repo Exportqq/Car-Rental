@@ -31,6 +31,7 @@ final class CarsCollectionView: UIViewController {
         cv.dataSource = self
         cv.delegate = self
         cv.showsHorizontalScrollIndicator = false
+        cv.clipsToBounds = false
         cv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         cv.register(CarsCell.self, forCellWithReuseIdentifier: "CarsCell")
@@ -135,7 +136,7 @@ extension CarsCollectionView: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 87, height: 94)
+        return CGSize(width: collectionView.frame.width, height: 171)
     }
 }
 

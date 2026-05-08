@@ -7,7 +7,6 @@ class CarsCardView: UIView {
         let background = UIView()
         background.backgroundColor = .white
         background.layer.cornerRadius = 24
-        background.layer.masksToBounds = true
         return background
     }()
 
@@ -24,7 +23,13 @@ class CarsCardView: UIView {
         return imageView
     }()
     
-    private let verticalLine: UIView = {
+    private let firstVerticalLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .textGrey
+        return view
+    }()
+
+    private let secondVerticalLine: UIView = {
         let view = UIView()
         view.backgroundColor = .textGrey
         return view
@@ -52,9 +57,22 @@ class CarsCardView: UIView {
     }()
     
     private lazy var infoStack: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [carTransmission, verticalLine, carSeats, verticalLine, carFuel])
+        let stackView = UIStackView(arrangedSubviews: [carTransmission, firstVerticalLine, carSeats, secondVerticalLine, carFuel])
         stackView.spacing = 12
         stackView.axis = .horizontal
+        return stackView
+    }()
+    
+    private let rentButton = CustomButtonUIButton()
+    
+    private let detailButton = CustomButtonUIButton()
+    
+    private lazy var buttonsStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [rentButton, detailButton])
+        stackView.spacing = 12
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -62,6 +80,7 @@ class CarsCardView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstrains()
+        setupActions()
     }
     
     required init?(coder: NSCoder) {
@@ -73,16 +92,20 @@ class CarsCardView: UIView {
         addSubview(carName)
         addSubview(infoStack)
         addSubview(carImage)
+        addSubview(buttonsStack)
     }
     
     private func setupConstrains() {
-        [cardBackground, carName, infoStack, carImage].forEach {
+        [cardBackground, carName, infoStack, carImage, buttonsStack].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
-            verticalLine.heightAnchor.constraint(equalToConstant: 18),
-            verticalLine.widthAnchor.constraint(equalToConstant: 1),
+            firstVerticalLine.heightAnchor.constraint(equalToConstant: 18),
+            firstVerticalLine.widthAnchor.constraint(equalToConstant: 1),
+            
+            secondVerticalLine.heightAnchor.constraint(equalToConstant: 18),
+            secondVerticalLine.widthAnchor.constraint(equalToConstant: 1),
             
             cardBackground.heightAnchor.constraint(equalToConstant: 171),
             cardBackground.trailingAnchor.constraint(equalTo: self.trailingAnchor),
@@ -95,11 +118,16 @@ class CarsCardView: UIView {
             
             carImage.widthAnchor.constraint(equalToConstant: 203),
             carImage.heightAnchor.constraint(equalToConstant: 164),
-            carImage.leadingAnchor.constraint(equalTo: carName.trailingAnchor, constant: 23),
+            carImage.trailingAnchor.constraint(equalTo: cardBackground.trailingAnchor, constant: 32),
             carImage.topAnchor.constraint(equalTo: cardBackground.topAnchor, constant: -73),
             
             infoStack.topAnchor.constraint(equalTo: carName.bottomAnchor, constant: 40),
             infoStack.centerXAnchor.constraint(equalTo: cardBackground.centerXAnchor),
+            
+            buttonsStack.topAnchor.constraint(equalTo: infoStack.bottomAnchor, constant: 24),
+            buttonsStack.leadingAnchor.constraint(equalTo: cardBackground.leadingAnchor, constant: 48),
+            buttonsStack.trailingAnchor.constraint(equalTo: cardBackground.trailingAnchor, constant: -48),
+            buttonsStack.heightAnchor.constraint(equalToConstant: 36)
         ])
     }
     
@@ -112,6 +140,16 @@ class CarsCardView: UIView {
         carTransmission.text = transmission
         carSeats.text = "\(seats)"
         carFuel.text = fuel
+    }
+    
+    func setupActions() {
+        rentButton.configure(title: "Rent Now", typeFill: true) { [weak self] in
+            return
+        }
+        
+        detailButton.configure(title: "Detail", typeFill: false) { [weak self] in
+            return
+        }
     }
 }
 
