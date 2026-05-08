@@ -4,7 +4,7 @@ import Combine
 
 final class CarsCollectionView: UIViewController {
     
-    let viewModel = CarsCollectionView()
+    let viewModel = CarsCollectionViewViewModel()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -64,7 +64,7 @@ final class CarsCollectionView: UIViewController {
         ])
     }
     
-    func update(with data: [carsModel]) {
+    func update(with data: [CarsModel]) {
         self.cars = data
         collectionView.reloadData()
     }
@@ -115,11 +115,14 @@ extension CarsCollectionView: UICollectionViewDataSource {
         
         let cars = cars[indexPath.item]
         
-        let fullUrl = APIConstants.baseURL + (cars.image ?? "")
+        let fullUrl = APIConstants.baseURL + (cars.car_image ?? "")
         
         cell.card.configure(
             image: fullUrl,
-            brand: cars.name ?? "",
+            name: cars.name ?? "",
+            transmission: cars.transmission ?? "",
+            seats: cars.seats,
+            fuel: cars.fuel_type ?? ""
         )
         
         return cell

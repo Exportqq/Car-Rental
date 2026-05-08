@@ -2,7 +2,7 @@ import UIKit
 
 final class CarsCell: UICollectionViewCell {
     
-    let card = CarCardView()
+    let card = CarsCardView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

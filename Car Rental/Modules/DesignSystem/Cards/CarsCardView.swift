@@ -72,10 +72,11 @@ class CarsCardView: UIView {
         addSubview(cardBackground)
         addSubview(carName)
         addSubview(infoStack)
+        addSubview(carImage)
     }
     
     private func setupConstrains() {
-        [cardBackground, carName, infoStack].forEach {
+        [cardBackground, carName, infoStack, carImage].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -102,14 +103,14 @@ class CarsCardView: UIView {
         ])
     }
     
-    func configure(image: String, name: String, transmission: String, seats: String, fuel: String) {
+    func configure(image: String, name: String, transmission: String, seats: Int, fuel: String) {
         if let url = URL(string: image) {
             carImage.kf.setImage(with: url)
         }
         
         carName.text = name
         carTransmission.text = transmission
-        carSeats.text = seats
+        carSeats.text = "\(seats)"
         carFuel.text = fuel
     }
 }

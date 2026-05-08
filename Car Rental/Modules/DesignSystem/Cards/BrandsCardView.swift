@@ -55,8 +55,10 @@ class BrandsCardView: UIView {
         NSLayoutConstraint.activate([
             cardBackground.heightAnchor.constraint(equalToConstant: 94),
             cardBackground.widthAnchor.constraint(equalToConstant: 87),
-            cardBackground.topAnchor.constraint(equalTo: self.topAnchor),
-            cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+//            cardBackground.topAnchor.constraint(equalTo: self.topAnchor),
+//            cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            cardBackground.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            cardBackground.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             mainStack.centerYAnchor.constraint(equalTo: cardBackground.centerYAnchor),
             mainStack.centerXAnchor.constraint(equalTo: cardBackground.centerXAnchor),

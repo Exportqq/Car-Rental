@@ -6,7 +6,7 @@ struct CarsModel: Decodable {
     let brand: String?
     let brand_image: String?
     let transmission: String?
-    let seats: Int?
+    let seats: Int
     let fuel_type: String?
     let car_image: String?
     let rating: Double?
