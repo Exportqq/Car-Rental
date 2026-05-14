@@ -1,0 +1,143 @@
+import UIKit
+
+class CarDetailViewController: UIViewController {
+    private let carBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backClr
+        view.layer.cornerRadius = 30
+        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        return view
+    }()
+    
+    private let carName: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Roboto-SemiBold", size: 24)
+        label.textColor = .textBlack
+        label.text = "S 500 Sedan"
+        return label
+    }()
+    
+    private let raitingIcon: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "star")
+        return img
+    }()
+    
+    private let carRaiting: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Roboto-Regular", size: 14)
+        label.textColor = .textBlack
+        label.text = "4.9"
+        return label
+    }()
+    
+    private lazy var raitingStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [raitingIcon, carRaiting])
+        stackView.spacing = 6
+        stackView.axis = .horizontal
+        return stackView
+    }()
+    
+    private let carReviews: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Roboto-Regular", size: 12)
+        label.textColor = .textGrey
+        label.text = "(230 Reviews)"
+        return label
+    }()
+    
+    private lazy var carFeedbackStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [raitingStack, carReviews])
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 12
+        return stackView
+    }()
+    
+    private lazy var carInfoStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [carName, carFeedbackStack])
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        return stackView
+    }()
+    
+    private let carImage: UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "test_mers")
+        img.contentMode = .scaleAspectFill
+        img.clipsToBounds = true
+        return img
+    }()
+    
+    private let backButton = BackButtonView()
+    
+    private let favoriteButton = FavoriteButtonView()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [backButton, favoriteButton])
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        return stackView
+    }()
+    
+    override func viewDidLoad() {
+        view.backgroundColor = .white
+        
+        super.viewDidLoad()
+        SetupView()
+        SetupConstraints()
+        setupActions()
+    }
+    
+    private func SetupView() {
+        
+        view.addSubview(carBackground)
+        view.addSubview(buttonsStackView)
+        view.addSubview(carInfoStack)
+        view.addSubview(carImage)
+    }
+    
+    private func SetupConstraints() {
+        [carBackground, buttonsStackView,carInfoStack, carImage].forEach{
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        [backButton, favoriteButton].forEach {
+            $0.widthAnchor.constraint(equalToConstant: 48).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        }
+        
+        NSLayoutConstraint.activate([
+            raitingIcon.heightAnchor.constraint(equalToConstant: 16),
+            raitingIcon.widthAnchor.constraint(equalToConstant: 16),
+            
+            carBackground.topAnchor.constraint(equalTo: view.topAnchor),
+            carBackground.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            carBackground.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            carBackground.heightAnchor.constraint(equalToConstant: 410),
+            
+            buttonsStackView.topAnchor.constraint(equalTo: carBackground.topAnchor, constant: 80),
+            buttonsStackView.leadingAnchor.constraint(equalTo: carBackground.leadingAnchor, constant: 32),
+            buttonsStackView.trailingAnchor.constraint(equalTo: carBackground.trailingAnchor, constant: -32),
+            
+            carInfoStack.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 16),
+            carInfoStack.leadingAnchor.constraint(equalTo: carBackground.leadingAnchor, constant: 36),
+            
+            carImage.bottomAnchor.constraint(equalTo: carBackground.bottomAnchor),
+            carImage.heightAnchor.constraint(equalToConstant: 272),
+            carImage.widthAnchor.constraint(equalToConstant: 337),
+            carImage.centerXAnchor.constraint(equalTo: carBackground.centerXAnchor)
+            
+        ])
+    }
+    
+    private func setupActions() {
+        backButton.configure() { [weak self] in
+            self?.pushBack()
+        }
+    }
+    
+    private func pushBack() {
+        NavigationHelper.pop(from: self)
+    }
+}
