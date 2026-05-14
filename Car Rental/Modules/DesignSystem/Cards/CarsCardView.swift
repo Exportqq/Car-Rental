@@ -3,6 +3,8 @@ import Kingfisher
 
 class CarsCardView: UIView {
     
+    var onDetailTap: (() -> Void)?
+    
     private let cardBackground: UIView = {
         let background = UIView()
         background.backgroundColor = .white
@@ -146,9 +148,9 @@ class CarsCardView: UIView {
         rentButton.configure(title: "Rent Now", typeFill: true) { [weak self] in
             return
         }
-        
+
         detailButton.configure(title: "Detail", typeFill: false) { [weak self] in
-            return
+            self?.onDetailTap?()
         }
     }
 }

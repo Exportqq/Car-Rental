@@ -55,8 +55,8 @@ class SpecsCardView: UIView {
         NSLayoutConstraint.activate([
             cardBackground.topAnchor.constraint(equalTo: self.topAnchor),
             cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            cardBackground.heightAnchor.constraint(equalToConstant: 48),
-            cardBackground.widthAnchor.constraint(equalToConstant: 124),
+            cardBackground.heightAnchor.constraint(equalTo: self.heightAnchor),
+            cardBackground.widthAnchor.constraint(equalTo: self.widthAnchor),
             
             specsStack.centerYAnchor.constraint(equalTo: cardBackground.centerYAnchor),
             specsStack.leadingAnchor.constraint(equalTo: cardBackground.leadingAnchor, constant: 8)

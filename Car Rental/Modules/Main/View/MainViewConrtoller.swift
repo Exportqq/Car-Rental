@@ -42,6 +42,7 @@ class MainViewConrtoller: UIViewController {
         super.viewDidLoad()
         SetupView()
         SetupConstraints()
+        setupCarsSelection()
     }
     
     private func SetupView() {
@@ -85,6 +86,29 @@ class MainViewConrtoller: UIViewController {
             carsScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             carsScreen.view.heightAnchor.constraint(equalToConstant: 500)
         ])
+    }
+    
+    private func setupCarsSelection() {
+        carsScreen.onCarsSelected = { [weak self] car in
+            guard let self else { return }
+
+            let vc = CarDetailViewController()
+
+            let baseUrl = "https://car-rental-api-u04q.onrender.com"
+            let fullUrl = baseUrl + (car.car_image ?? "")
+
+            vc.configure(
+                name: car.name ?? "",
+                raiting: car.rating ?? 0,
+                reviews: car.reviews_count ?? "",
+                imageUrl: fullUrl,
+                power: car.horsepower ?? "",
+                max_speed: car.max_speed ?? "",
+                acceleration: car.characteristics ?? ""
+            )
+
+            NavigationHelper.push(vc, from: self)
+        }
     }
 }
 
