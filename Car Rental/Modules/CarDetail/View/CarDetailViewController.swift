@@ -7,6 +7,8 @@ class CarDetailViewController: UIViewController {
     
     private let carDetailSpecs = CarDetailSpecsView()
     
+    private let carDetailPlans = CarDetailPlanView()
+    
     override func viewDidLoad() {
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
@@ -21,10 +23,11 @@ class CarDetailViewController: UIViewController {
     private func SetupView() {
         view.addSubview(carDetailHeader)
         view.addSubview(carDetailSpecs)
+        view.addSubview(carDetailPlans)
     }
     
     private func SetupConstraints() {
-        [carDetailHeader, carDetailSpecs].forEach{
+        [carDetailHeader, carDetailSpecs, carDetailPlans].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -38,6 +41,11 @@ class CarDetailViewController: UIViewController {
             carDetailSpecs.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             carDetailSpecs.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             carDetailSpecs.heightAnchor.constraint(equalToConstant: 85),
+            
+            carDetailPlans.topAnchor.constraint(equalTo: carDetailSpecs.bottomAnchor, constant: 26),
+            carDetailPlans.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            carDetailPlans.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            carDetailPlans.heightAnchor.constraint(equalToConstant: 118),
         ])
     }
 
@@ -59,6 +67,8 @@ class CarDetailViewController: UIViewController {
             max_speed: max_speed,
             acceleration: acceleration
         )
+        
+        carDetailPlans.configure(priceHourly: 100, priceDaily: 500)
     }
     
     private func setupActions() {

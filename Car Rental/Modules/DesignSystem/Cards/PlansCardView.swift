@@ -2,6 +2,10 @@ import UIKit
 
 class PlansCardView: UIView {
     
+    private var priceLeadingConstraint: NSLayoutConstraint!
+    private var priceHeightConstraint: NSLayoutConstraint!
+    private var priceTopConstraint: NSLayoutConstraint!
+    
     private let cardBackground: UIView = {
         let background = UIView()
         background.backgroundColor = .clear
@@ -15,7 +19,7 @@ class PlansCardView: UIView {
         let view = UIView()
         view.backgroundColor = .disabled
         view.layer.cornerRadius = 18
-        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         return view
     }()
     
@@ -79,13 +83,37 @@ class PlansCardView: UIView {
     }
     
     func setSelected(_ isSelected: Bool) {
-        let borderWidth: CGFloat = isSelected ? 2 : 0
         
+        priceLeadingConstraint.constant = isSelected ? 2 : 1
+        priceHeightConstraint.constant = isSelected ? 76 : 78
+        priceTopConstraint.constant = isSelected ? 2 : 1
+            
         UIView.animate(withDuration: 0.2) {
-//            self.card.layer.borderWidth = borderWidth
+            
+            self.cardBackground.layer.borderWidth = isSelected ? 2 : 1
+            
+            self.cardBackground.layer.borderColor = isSelected
+            ? UIColor.brandClr.cgColor
+            : UIColor.textGrey.cgColor
+            
+            self.cardPriceView.backgroundColor = isSelected
+            ? .lightBrandClr
+            : .disabled
+            
+            self.cardPlacIcon.tintColor = isSelected
+            ? .brandClr
+            : .disabled
+            
+            self.cardPlanPrice.textColor = isSelected
+            ? .brandClr
+            : .textGrey
+            
+            self.cardTypeTitle.textColor = isSelected
+            ? .textBlack
+            : .textGrey
+            
+            self.layoutIfNeeded()
         }
-        
-//        card.layer.borderColor = UIColor.brandClr.cgColor
     }
     
     private func setupConstrains() {
@@ -93,16 +121,33 @@ class PlansCardView: UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        priceLeadingConstraint = cardPriceView.leadingAnchor.constraint(
+            equalTo: cardBackground.leadingAnchor,
+            constant: 1
+        )
+
+        priceHeightConstraint = cardPriceView.heightAnchor.constraint(
+            equalToConstant: 78
+        )
+        
+        priceTopConstraint = cardPriceView.topAnchor.constraint(
+            equalTo: cardBackground.topAnchor,
+            constant: 1
+        )
+        
         NSLayoutConstraint.activate([
             cardBackground.topAnchor.constraint(equalTo: self.topAnchor),
             cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cardBackground.heightAnchor.constraint(equalTo: self.heightAnchor),
             cardBackground.widthAnchor.constraint(equalTo: self.widthAnchor),
           
-            cardPriceView.topAnchor.constraint(equalTo: cardBackground.topAnchor),
-            cardPriceView.bottomAnchor.constraint(equalTo: cardBackground.bottomAnchor),
-            cardPriceView.leadingAnchor.constraint(equalTo: cardBackground.leadingAnchor),
+//            cardPriceView.topAnchor.constraint(equalTo: cardBackground.topAnchor, constant: 2),
+//            cardPriceView.bottomAnchor.constraint(equalTo: cardBackground.bottomAnchor),
+//            cardPriceView.leadingAnchor.constraint(equalTo: cardBackground.leadingAnchor, constant: 2),
             cardPriceView.widthAnchor.constraint(equalToConstant: 44),
+            priceLeadingConstraint,
+            priceHeightConstraint,
+            priceTopConstraint,
             
             priceViewStack.centerXAnchor.constraint(equalTo: cardPriceView.centerXAnchor),
             priceViewStack.centerYAnchor.constraint(equalTo: cardPriceView.centerYAnchor),
@@ -112,7 +157,7 @@ class PlansCardView: UIView {
         ])
     }
     
-    func configure(icon: UIImage, price: String, title: String, text: String) {
+    func configure(icon: UIImage?, price: String, title: String, text: String) {
         cardPlacIcon.image = icon
         cardPlanPrice.text = price
         cardTypeTitle.text = title
