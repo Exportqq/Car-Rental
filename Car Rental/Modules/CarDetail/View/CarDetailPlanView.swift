@@ -82,7 +82,7 @@ class CarDetailPlanView: UIView {
     func configure(priceHourly: Int, priceDaily: Int) {
         hourlyCard.configure(icon: UIImage(named: "hourly"), price: "$\(priceHourly)", title: "Hourly Rent", text: "Best for business appointments")
         
-        hourlyCard.configure(icon: UIImage(named: "daily"), price: "$\(priceDaily)", title: "Daily Rent", text: "Best for travel")
+        dailyCard.configure(icon: UIImage(named: "daily"), price: "$\(priceDaily)", title: "Daily Rent", text: "Best for travel")
     }
     
     @objc private func planTapped(_ sender: UITapGestureRecognizer) {

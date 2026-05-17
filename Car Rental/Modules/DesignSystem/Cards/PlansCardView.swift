@@ -55,6 +55,7 @@ class PlansCardView: UIView {
         let label = UILabel()
         label.font = UIFont(name: "Roboto-Bold", size: 14)
         label.textColor = .disabled
+        label.numberOfLines = 0
         return label
     }()
     
@@ -112,6 +113,10 @@ class PlansCardView: UIView {
             ? .textBlack
             : .textGrey
             
+            self.cardTypeText.textColor = isSelected
+            ? .textGrey
+            : .textGreyLigth
+            
             self.layoutIfNeeded()
         }
     }
@@ -140,10 +145,7 @@ class PlansCardView: UIView {
             cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cardBackground.heightAnchor.constraint(equalTo: self.heightAnchor),
             cardBackground.widthAnchor.constraint(equalTo: self.widthAnchor),
-          
-//            cardPriceView.topAnchor.constraint(equalTo: cardBackground.topAnchor, constant: 2),
-//            cardPriceView.bottomAnchor.constraint(equalTo: cardBackground.bottomAnchor),
-//            cardPriceView.leadingAnchor.constraint(equalTo: cardBackground.leadingAnchor, constant: 2),
+           
             cardPriceView.widthAnchor.constraint(equalToConstant: 44),
             priceLeadingConstraint,
             priceHeightConstraint,
@@ -153,7 +155,9 @@ class PlansCardView: UIView {
             priceViewStack.centerYAnchor.constraint(equalTo: cardPriceView.centerYAnchor),
             
             textStack.centerYAnchor.constraint(equalTo: cardBackground.centerYAnchor),
-            textStack.leadingAnchor.constraint(equalTo: cardPriceView.leadingAnchor, constant: 8),
+            textStack.leadingAnchor.constraint(equalTo: cardPriceView.trailingAnchor, constant: 8),
+            
+            cardTypeText.widthAnchor.constraint(equalToConstant: 120)
         ])
     }
     
