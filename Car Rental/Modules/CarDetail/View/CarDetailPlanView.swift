@@ -3,8 +3,14 @@ import UIKit
 class CarDetailPlanView: UIView {
     
     var onPlanSelected: ((String?) -> Void)?
+    
+    private(set) var selectedPlan: String? = "hourly"
                 
     private var selectedCard: PlansCardView?
+    
+    private let hourlyCard = PlansCardView()
+    
+    private let dailyCard = PlansCardView()
     
     private let planTitle: UILabel = {
         let label = UILabel()
@@ -13,10 +19,6 @@ class CarDetailPlanView: UIView {
         label.textColor = .textBlack
         return label
     }()
-    
-    private let hourlyCard = PlansCardView()
-    
-    private let dailyCard = PlansCardView()
     
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -114,20 +116,21 @@ class CarDetailPlanView: UIView {
         selectedCard = tappedCard
         
         // Определяем выбранный план
-        let selectedPlan: String
+        let plan: String
         
         switch tappedCard.tag {
         case 0:
-            selectedPlan = "hourly"
+            plan = "hourly"
             
         case 1:
-            selectedPlan = "daily"
+            plan = "daily"
             
         default:
             return
         }
         
-        onPlanSelected?(selectedPlan)
+        selectedPlan = plan
+        onPlanSelected?(plan)
     }
     
     private func setupGestures() {

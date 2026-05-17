@@ -94,8 +94,10 @@ class MainViewConrtoller: UIViewController {
 
             let vc = CarDetailViewController()
 
-            let baseUrl = "https://car-rental-api-u04q.onrender.com"
+            let baseUrl = APIConstants.baseURL
             let fullUrl = baseUrl + (car.car_image ?? "")
+
+            let isHourly = vc.carDetailPlans.selectedPlan == "hourly"
 
             vc.configure(
                 name: car.name ?? "",
@@ -104,9 +106,27 @@ class MainViewConrtoller: UIViewController {
                 imageUrl: fullUrl,
                 power: car.horsepower ?? "",
                 max_speed: car.max_speed ?? "",
-                acceleration: car.characteristics ?? ""
+                acceleration: car.characteristics ?? "",
+                location: car.location ?? "",
+                price: isHourly ? car.price_per_hour : car.price_per_day,
+                type: isHourly ? "/ hour" : "/ day",
+                pricePerDay: car.price_per_day,
+                pricePerHourly: car.price_per_hour
             )
 
+            vc.carDetailPlans.onPlanSelected = { plan in
+                
+                let isHourly = plan == "hourly"
+
+                vc.updatePrice(
+                    price: isHourly ? car.price_per_hour : car.price_per_day,
+                    type: isHourly ? "/ hour" : "/ day"
+                )
+                
+                vc.alertTitle = "Your pick up: \(car.name ?? "")"
+                vc.alertText = "Your plan: \(isHourly ? "hourly" : "/ days"), price: \(isHourly ? car.price_per_hour : car.price_per_day)"
+            }
+            
             NavigationHelper.push(vc, from: self)
         }
     }

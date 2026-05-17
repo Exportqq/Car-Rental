@@ -3,31 +3,42 @@ import Kingfisher
 
 class CarDetailViewController: UIViewController {
     
+    var alertTitle: String?
+    var alertText: String?
+    
     private let carDetailHeader = CarDetailHeaderView()
     
     private let carDetailSpecs = CarDetailSpecsView()
     
-    private let carDetailPlans = CarDetailPlanView()
+    let carDetailPlans = CarDetailPlanView()
+    
+    let carDetailLocation = CarDetailLocationView()
+    
+    private lazy var carDetailStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [carDetailSpecs, carDetailPlans, carDetailLocation])
+        stackView.axis = .vertical
+        stackView.spacing = 24
+        return stackView
+    }()
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
         
-        super.viewDidLoad()
         SetupView()
         SetupConstraints()
         setupActions()
-        
     }
     
     private func SetupView() {
         view.addSubview(carDetailHeader)
-        view.addSubview(carDetailSpecs)
-        view.addSubview(carDetailPlans)
+        view.addSubview(carDetailStack)
     }
     
     private func SetupConstraints() {
-        [carDetailHeader, carDetailSpecs, carDetailPlans].forEach{
+        [carDetailHeader, carDetailStack].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -37,19 +48,18 @@ class CarDetailViewController: UIViewController {
             carDetailHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             carDetailHeader.heightAnchor.constraint(equalToConstant: 410),
             
-            carDetailSpecs.topAnchor.constraint(equalTo: carDetailHeader.bottomAnchor, constant: 26),
-            carDetailSpecs.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            carDetailSpecs.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             carDetailSpecs.heightAnchor.constraint(equalToConstant: 85),
-            
-            carDetailPlans.topAnchor.constraint(equalTo: carDetailSpecs.bottomAnchor, constant: 26),
-            carDetailPlans.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            carDetailPlans.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             carDetailPlans.heightAnchor.constraint(equalToConstant: 118),
+            carDetailLocation.heightAnchor.constraint(equalToConstant: 134),
+            
+            carDetailStack.topAnchor.constraint(equalTo: carDetailHeader.bottomAnchor, constant: 24),
+            carDetailStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            carDetailStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            
         ])
     }
 
-    func configure(name: String, raiting: Double, reviews: String, imageUrl: String, power: String, max_speed: String, acceleration: String) {
+    func configure(name: String, raiting: Double, reviews: String, imageUrl: String, power: String, max_speed: String, acceleration: String, location: String, price: Int, type: String, pricePerDay: Int, pricePerHourly: Int) {
         
         if let url = URL(string: imageUrl) {
             carDetailHeader.carImage.kf.setImage(with: url)
@@ -68,7 +78,23 @@ class CarDetailViewController: UIViewController {
             acceleration: acceleration
         )
         
-        carDetailPlans.configure(priceHourly: 100, priceDaily: 500)
+        carDetailPlans.configure(
+            priceHourly: pricePerHourly,
+            priceDaily: pricePerDay
+        )
+        
+        carDetailLocation.configure(
+            location: location,
+            price: price,
+            type: type
+        )
+    }
+    
+    func updatePrice(price: Int, type: String) {
+        carDetailLocation.updatePrice(
+            price: price,
+            type: type
+        )
     }
     
     private func setupActions() {
@@ -76,5 +102,26 @@ class CarDetailViewController: UIViewController {
             guard let self else { return }
             NavigationHelper.pop(from: self)
         }
+        
+        carDetailLocation.onPickUpTapped = { [weak self] in
+            guard let self else {return}
+                self.showAlert()
+            }
     }
+    
+    private func showAlert() {
+        
+        
+        let alert = UIAlertController(
+            title: alertTitle,
+            message: alertText,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        present(alert, animated: true)
+    }
+    
+    
 }

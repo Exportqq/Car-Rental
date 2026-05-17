@@ -13,7 +13,7 @@ final class CarsCollectionView: UIViewController {
 
     private let carTitle: UILabel = {
         let label = UILabel()
-        label.text = "cars"
+        label.text = "Cars"
         label.textColor = .textBlack
         label.font = UIFont(name: "Roboto-Bold", size: 24)
         return label

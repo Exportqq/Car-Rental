@@ -32,7 +32,7 @@ class PlansCardView: UIView {
     private let cardPlanPrice: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Roboto-Bold", size: 12)
-        label.textColor = .disabled
+        label.textColor = .textGrey
         return label
     }()
     
@@ -47,14 +47,14 @@ class PlansCardView: UIView {
     private let cardTypeTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Roboto-Bold", size: 14)
-        label.textColor = .disabled
+        label.textColor = .textGrey
         return label
     }()
     
     private let cardTypeText: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Roboto-Bold", size: 14)
-        label.textColor = .disabled
+        label.textColor = .textGreyLigth
         label.numberOfLines = 0
         return label
     }()
