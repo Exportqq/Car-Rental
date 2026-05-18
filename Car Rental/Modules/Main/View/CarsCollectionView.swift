@@ -9,6 +9,7 @@ final class CarsCollectionView: UIViewController {
 
     var onCarsSelected: ((CarsModel) -> Void)?
 
+    private var allCars: [CarsModel] = []
     private var cars: [CarsModel] = []
 
     private let carTitle: UILabel = {
@@ -65,7 +66,23 @@ final class CarsCollectionView: UIViewController {
     }
 
     func update(with data: [CarsModel]) {
+        self.allCars = data
         self.cars = data
+        collectionView.reloadData()
+    }
+    
+    func filterCars(by brandName: String?) {
+
+        guard let brandName else {
+            cars = allCars
+            collectionView.reloadData()
+            return
+        }
+
+        cars = allCars.filter { car in
+            car.brand?.lowercased() == brandName.lowercased()
+        }
+
         collectionView.reloadData()
     }
 

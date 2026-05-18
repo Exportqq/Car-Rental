@@ -26,6 +26,7 @@ class PlansCardView: UIView {
     private let cardPlacIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .textGrey
         return imageView
     }()
     
@@ -101,10 +102,6 @@ class PlansCardView: UIView {
             ? .lightBrandClr
             : .disabled
             
-            self.cardPlacIcon.tintColor = isSelected
-            ? .brandClr
-            : .disabled
-            
             self.cardPlanPrice.textColor = isSelected
             ? .brandClr
             : .textGrey
@@ -116,6 +113,10 @@ class PlansCardView: UIView {
             self.cardTypeText.textColor = isSelected
             ? .textGrey
             : .textGreyLigth
+            
+            self.cardPlacIcon.tintColor = isSelected
+            ? .brandClr
+            : .textGrey
             
             self.layoutIfNeeded()
         }
@@ -162,7 +163,7 @@ class PlansCardView: UIView {
     }
     
     func configure(icon: UIImage?, price: String, title: String, text: String) {
-        cardPlacIcon.image = icon
+        cardPlacIcon.image = icon?.withRenderingMode(.alwaysTemplate)
         cardPlanPrice.text = price
         cardTypeTitle.text = title
         cardTypeText.text = text

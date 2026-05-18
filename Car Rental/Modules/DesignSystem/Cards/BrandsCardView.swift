@@ -55,8 +55,6 @@ class BrandsCardView: UIView {
         NSLayoutConstraint.activate([
             cardBackground.heightAnchor.constraint(equalToConstant: 94),
             cardBackground.widthAnchor.constraint(equalToConstant: 87),
-//            cardBackground.topAnchor.constraint(equalTo: self.topAnchor),
-//            cardBackground.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             cardBackground.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             cardBackground.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -65,6 +63,20 @@ class BrandsCardView: UIView {
             
             brandImage.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    func setSelected(_ isSelected: Bool) {
+
+        let animation = CABasicAnimation(keyPath: "borderWidth")
+        animation.duration = 0.2
+        animation.fromValue = cardBackground.layer.borderWidth
+        animation.toValue = isSelected ? 2 : 0
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+
+        cardBackground.layer.add(animation, forKey: "borderWidth")
+
+        cardBackground.layer.borderWidth = isSelected ? 2 : 0
+        cardBackground.layer.borderColor = UIColor.brandClr.cgColor
     }
     
     func configure(image: String,brand: String) {

@@ -8,9 +8,11 @@ final class BrandsCollectionView: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    var onBrandsSelected: ((BrandsModel) -> Void)?
+    var onBrandsSelected: ((BrandsModel?) -> Void)?
     
     private var brands: [BrandsModel] = []
+    
+    private var selectedIndexPath: IndexPath?
     
     private let brandTitle: UILabel = {
         let label = UILabel()
@@ -58,7 +60,7 @@ final class BrandsCollectionView: UIViewController {
             brandTitle.heightAnchor.constraint(equalToConstant: 28),
             
             collectionView.topAnchor.constraint(equalTo: brandTitle.bottomAnchor, constant: 10),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 94),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -122,6 +124,9 @@ extension BrandsCollectionView: UICollectionViewDataSource {
             brand: brands.name ?? "",
         )
         
+        let isSelected = selectedIndexPath == indexPath
+        cell.card.setSelected(isSelected)
+        
         return cell
     }
 }
@@ -139,6 +144,19 @@ extension BrandsCollectionView: UICollectionViewDelegateFlowLayout {
 extension BrandsCollectionView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if selectedIndexPath == indexPath {
+
+            selectedIndexPath = nil
+            collectionView.reloadData()
+
+            onBrandsSelected?(nil)
+            return
+        }
+
+        selectedIndexPath = indexPath
+        collectionView.reloadData()
+
         let selectedBrand = brands[indexPath.item]
         onBrandsSelected?(selectedBrand)
     }

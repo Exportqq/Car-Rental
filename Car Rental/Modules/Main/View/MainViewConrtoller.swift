@@ -43,6 +43,7 @@ class MainViewConrtoller: UIViewController {
         SetupView()
         SetupConstraints()
         setupCarsSelection()
+        setupBrandSelection()
     }
     
     private func SetupView() {
@@ -86,6 +87,15 @@ class MainViewConrtoller: UIViewController {
             carsScreen.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             carsScreen.view.heightAnchor.constraint(equalToConstant: 500)
         ])
+    }
+    
+    private func setupBrandSelection() {
+
+        brandsScreen.onBrandsSelected = { [weak self] brand in
+            guard let self else { return }
+
+            self.carsScreen.filterCars(by: brand?.name)
+        }
     }
     
     private func setupCarsSelection() {
