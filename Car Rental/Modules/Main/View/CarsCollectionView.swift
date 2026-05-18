@@ -108,6 +108,33 @@ final class CarsCollectionView: UIViewController {
             }
             .store(in: &cancellables)
     }
+    
+    func applyFilters(brand: String?, searchText: String?) {
+
+        cars = allCars.filter { car in
+
+            let matchesBrand: Bool = {
+                guard let brand else { return true }
+
+                return car.brand?
+                    .lowercased()
+                    .contains(brand.lowercased()) ?? false
+            }()
+
+            let matchesSearch: Bool = {
+                guard let searchText,
+                      !searchText.isEmpty else { return true }
+
+                return car.name?
+                    .lowercased()
+                    .contains(searchText.lowercased()) ?? false
+            }()
+
+            return matchesBrand && matchesSearch
+        }
+
+        collectionView.reloadData()
+    }
 }
 
 extension CarsCollectionView: UICollectionViewDataSource {

@@ -4,6 +4,9 @@ class MainViewConrtoller: UIViewController {
     
     private lazy var search = CustomSearchBarView(searchDelegate: self)
     
+    private var currentSearchText: String = ""
+    private var selectedBrand: String?
+    
     private let avatarView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -89,14 +92,25 @@ class MainViewConrtoller: UIViewController {
         ])
     }
     
+    private func applyFilters() {
+
+        carsScreen.applyFilters(
+            brand: selectedBrand,
+            searchText: currentSearchText
+        )
+    }
+    
     private func setupBrandSelection() {
 
         brandsScreen.onBrandsSelected = { [weak self] brand in
             guard let self else { return }
 
-            self.carsScreen.filterCars(by: brand?.name)
+            self.selectedBrand = brand?.name
+            self.applyFilters()
         }
     }
+    
+    
     
     private func setupCarsSelection() {
         carsScreen.onCarsSelected = { [weak self] car in
@@ -140,8 +154,37 @@ class MainViewConrtoller: UIViewController {
             NavigationHelper.push(vc, from: self)
         }
     }
+    
 }
 
 extension MainViewConrtoller: UISearchBarDelegate {
-    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        NSObject.cancelPreviousPerformRequests(
+            withTarget: self,
+            selector: #selector(reloadSearch(_:)),
+            object: searchBar
+        )
+        
+        perform(#selector(reloadSearch(_:)), with: searchBar, afterDelay: 0.5)
+    }
+
+    @objc private func reloadSearch(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        
+        currentSearchText = text
+        applyFilters()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        
+        currentSearchText = ""
+        applyFilters()
+    }
 }
